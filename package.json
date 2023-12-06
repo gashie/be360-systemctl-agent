@@ -4,7 +4,8 @@
   "description": "systemd controller api",
   "main": "server.js",
   "scripts": {
-    "test": "systemctl status service"
+    "start": "NODE_ENV=production node server",
+    "service": "nodemon server"
   },
   "repository": {
     "type": "git",
