@@ -30,7 +30,18 @@ function listRunningServices() {
     console.error(`Error listing running services: ${error.message}`);
   }
 }
-
+function getServiceInfo(serviceName) {
+    try {
+      // Add a debug statement to print the service name
+      console.log(`Fetching information for service: ${serviceName}`);
+  
+      // Rest of the function remains unchanged
+      // ...
+    } catch (error) {
+      console.error(`Error fetching information for ${serviceName}: ${error.message}`);
+      return null;
+    }
+  }
 // Rest of the script remains unchanged
 // ...
 
