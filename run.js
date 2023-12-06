@@ -11,10 +11,11 @@ function listUnits() {
         const unitsList = [];
   
         lines.forEach((line) => {
-            console.log('====================================');
-            console.log(line);
-            console.log('====================================');
-          const [unit, load, active, sub, description] = line.split(/\s+/);
+        
+          const [unit, load, active, sub, description, Arbitrary, ExecutableFile, Formats, File, System ,Automount, Point] = line.split(/\s+/);
+          console.log('====================================');
+          console.log( Arbitrary, ExecutableFile, Formats, File, System ,Automount, Point);
+          console.log('====================================');
           unitsList.push({ unit, load, active, sub, description });
         });
   
