@@ -17,14 +17,10 @@ async function listRunningServices() {
       // Split the line into columns
       const columns = line.split(/\s+/);
 
-      // Extract relevant information
-      const unit = columns[0];
-      const description = columns.slice(4).join(' ');
 
       // Display information
-      console.log(`Unit: ${unit}`);
-      console.log(`  Description: ${description}`);
-      console.log('---');
+      console.log(columns.length);
+      console.log('---',columns);
     }
   } catch (error) {
     // Ignore errors related to init.scope
