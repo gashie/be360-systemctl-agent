@@ -1,32 +1,30 @@
-const sysctlx = require('sysctlx');
+const { exec } = require('child_process');
 
 async function listRunningServices() {
   try {
-    // Run systemctl command to list all running services in plain text
-    const result = await sysctlx.systemctl('list-units', '--type=service', '--state=running', '--plain', '--all', '--no-pager');
+    // Run systemctl command to list all running services
+    const result = await exec('systemctl list-units --type=service --state=running --no-pager --plain');
 
     // Split the output into lines
-    const lines = result.split('\n');
+    const lines = result.stdout.split('\n');
 
-    // Display the list of running services with additional details
-    console.log('Running Services:');
+    // Display detailed information for each running service
     for (const line of lines) {
       // Skip empty lines
       if (!line.trim()) continue;
 
-      // Split the line into columns
-      const columns = line.split(/\s+/);
+      // Extract service name
+      const serviceName = line.trim();
 
+      // Run systemctl status for the service
+      const statusResult = await exec(`systemctl status ${serviceName}`);
 
-      // Display information
-      console.log(columns.length);
-      console.log('---',columns);
+      // Display the detailed information including the raw message
+      console.log(statusResult.stdout);
+      console.log('---');
     }
   } catch (error) {
-    // Ignore errors related to init.scope
-    if (!error.stderr.includes('Failed to get unit file state for init.scope: No such file or directory')) {
-      console.error('Error running systemctl command:', error);
-    }
+    console.error('Error running systemctl command:', error);
   }
 }
 
