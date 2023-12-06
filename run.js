@@ -1,32 +1,26 @@
 const { exec } = require('child_process');
 
-async function listRunningServices() {
-  try {
-    // Run systemctl command to list all running services
-    const result = await exec('systemctl list-units --type=service --state=running --no-pager --plain');
-
-    // Split the output into lines
-    const lines = result.stdout.split('\n');
-
-    // Display detailed information for each running service
-    for (const line of lines) {
-      // Skip empty lines
-      if (!line.trim()) continue;
-
-      // Extract service name
-      const serviceName = line.trim();
-
-      // Run systemctl status for the service
-      const statusResult = await exec(`systemctl status ${serviceName}`);
-
-      // Display the detailed information including the raw message
-      console.log(statusResult.stdout);
-      console.log('---');
-    }
-  } catch (error) {
-    console.error('Error running systemctl command:', error);
+function listUnits() {
+    const cmd = 'systemctl list-units --no-legend';
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error listing units');
+        console.error(stderr);
+      } else {
+        const lines = stdout.trim().split('\n');
+        const unitsList = [];
+  
+        lines.forEach((line) => {
+            console.log('====================================');
+            console.log(line);
+            console.log('====================================');
+          const [unit, load, active, sub, description] = line.split(/\s+/);
+          unitsList.push({ unit, load, active, sub, description });
+        });
+  
+        console.log(JSON.stringify(unitsList, null, 2));
+      }
+    });
   }
-}
-
-// Call the function to list running services
-listRunningServices();
+  
+  listUnits();
