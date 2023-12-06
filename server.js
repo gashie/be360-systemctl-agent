@@ -5,7 +5,7 @@ let handlers = require('./handlers');
 let server = express();
 
 server.get('/service/:service', handlers.getServiceStatus);
-server.get('/service/list', handlers.listService);
+server.get('/list', handlers.listService);
 server.get('/service/:service/enable', handlers.enableService);
 server.get('/service/:service/disable', handlers.disableService);
 server.get('/service/:service/start', handlers.startService);
