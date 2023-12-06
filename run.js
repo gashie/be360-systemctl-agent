@@ -10,10 +10,10 @@ async function listRunningServices() {
       const services =result;
 
       // Display the list of running services
-      console.log('Running Services:');
-      services.forEach(service => {
-        console.log(`- ${service[0]}`);
-      });
+      console.log('Running Services:',services);
+    //   services.forEach(service => {
+    //     console.log(`- ${service[0]}`);
+    //   });
     } catch (jsonError) {
       console.error('Error parsing JSON:', jsonError);
       console.log('Raw Output:', result);
