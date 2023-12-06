@@ -92,8 +92,12 @@ exports.listService = function (request, response) {
           const [unit, load, active, sub, description] = line.split(/\s+/);
           unitsList.push({ unit, load, active, sub, description });
         });
+
+		console.log('====================================');
+		console.log(JSON.stringify(unitsList, null, 2));
+		console.log('====================================');
   
-       response.json(JSON.parse(unitsList, null, 2))
+       response.json(unitsList)
       }
     });
 };
