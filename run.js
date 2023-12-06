@@ -7,9 +7,12 @@ function listRunningServices() {
 
     // Loop through each running service
     runningServices.forEach((service) => {
-      const serviceInfo = getServiceInfo(service);
-      if (serviceInfo) {
-        console.log(JSON.stringify(serviceInfo, null, 2));
+      // Filter out invalid unit names
+      if (!service.match(/[^A-Za-z0-9_-]/)) {
+        const serviceInfo = getServiceInfo(service);
+        if (serviceInfo) {
+          console.log(JSON.stringify(serviceInfo, null, 2));
+        }
       }
     });
   } catch (error) {
