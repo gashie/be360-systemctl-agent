@@ -92,7 +92,7 @@ exports.listService = function (request, response) {
         unitsList.push({ unit, load, active, sub, description });
       });
 
-      response.json(JSON.stringify(unitsList, null, 2))
+      response.send(JSON.stringify(unitsList, null, 2))
     }
   });
 };
