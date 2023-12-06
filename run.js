@@ -7,7 +7,7 @@ async function listRunningServices() {
 
     try {
       // Parse the JSON result
-      const services = JSON.parse(result);
+      const services =result;
 
       // Display the list of running services
       console.log('Running Services:');
