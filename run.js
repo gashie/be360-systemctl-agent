@@ -1,8 +1,8 @@
-const { exec } = require('child_process');
 
 
 // Function to list units and convert to JSON
 function listUnits() {
+    const { exec } = require('child_process');
   const cmd = 'systemctl list-units --no-legend';
   exec(cmd, (error, stdout, stderr) => {
     if (error) {
