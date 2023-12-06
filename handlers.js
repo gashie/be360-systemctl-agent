@@ -77,6 +77,7 @@ exports.getServiceStatus = function (request, response) {
 	});
 };
 exports.listService = function (request, response) {
+	const { exec } = require('child_process');
 	const cmd = 'systemctl list-units --no-legend';
 	exec(cmd, (error, stdout, stderr) => {
 	  if (error) {
