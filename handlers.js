@@ -96,20 +96,24 @@ exports.listService = function (request, response) {
 			  console.error(`Error getting detailed info for ${unit}`);
 			  console.error(detailStderr);
 			} else {
-			  const [loaded, activeState, desc, subState, unitFileState, activeEnterTimestamp, mainPID] = detailStdout.trim().split(/\n/);
+			  const details = detailStdout.trim().split('\n').reduce((acc, line) => {
+				const [key, value] = line.split('=');
+				acc[key] = value;
+				return acc;
+			  }, {});
   
 			  const unitInfo = {
 				name: unit,
-				description: desc.split('=')[1],
-				loaded: loaded.split('=')[1] === 'loaded',
-				file: unitFileState.split('=')[1],
-				startup: activeState.split('=')[1],
+				description: details.Description,
+				loaded: details.LoadState === 'loaded',
+				file: details.UnitFileState,
+				startup: details.ActiveState,
 				props: {
-				  preset: subState.split('=')[1],
+				  preset: details.SubState,
 				},
-				active: activeState.split('=')[1],
-				started: new Date(parseInt(activeEnterTimestamp.split('=')[1]) * 1000).toISOString(),
-				pid: mainPID.split('=')[1],
+				active: details.ActiveState,
+				started: details.ActiveEnterTimestamp ? new Date(parseInt(details.ActiveEnterTimestamp) * 1000).toISOString() : null,
+				pid: details.MainPID,
 				raw: detailStdout.trim(),
 			  };
   
@@ -118,7 +122,7 @@ exports.listService = function (request, response) {
   
 			// Print the JSON result when all units are processed
 			if (unitsList.length === lines.length) {
-			  response.json(JSON.stringify(unitsList, null, 2))
+			  console.log(JSON.stringify(unitsList, null, 2));
 			}
 		  });
 		});
