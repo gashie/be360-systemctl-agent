@@ -1,0 +1,26 @@
+{
+  "name": "be360-systemctl-agent",
+  "version": "1.0.0",
+  "description": "systemd controller api",
+  "main": "server.js",
+  "scripts": {
+    "test": "systemctl status service"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gashie/be360-systemctl-agent.git"
+  },
+  "keywords": [
+    "systemctl"
+  ],
+  "author": "Gashie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gashie/be360-systemctl-agent/issues"
+  },
+  "homepage": "https://github.com/gashie/be360-systemctl-agent#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sysctlx": "^0.0.7"
+  }
+}
