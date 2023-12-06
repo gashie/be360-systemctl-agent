@@ -1,5 +1,6 @@
 'use strict';
 
+const { json } = require('express');
 let ctl = require('sysctlx');
 
 function parseEnableResponse(raw) {
@@ -79,53 +80,20 @@ exports.getServiceStatus = function (request, response) {
 exports.listService = function (request, response) {
 	const { exec } = require('child_process');
     const cmd = 'systemctl list-units --no-legend';
-  exec(cmd, (error, stdout, stderr) => {
-    if (error) {
-      console.error('Error listing units');
-      console.error(stderr);
-    } else {
-      const lines = stdout.trim().split('\n');
-      const unitsList = [];
-
-      lines.forEach((line) => {
-        const [unit, load, active, sub, description] = line.split(/\s+/);
-
-        const detailedInfoCmd = `systemctl show ${unit} --no-pager --property=LoadState,ActiveState,Description,SubState,UnitFileState,ActiveEnterTimestamp,MainPID`;
-        exec(detailedInfoCmd, (detailError, detailStdout, detailStderr) => {
-          if (detailError) {
-            console.error(`Error getting detailed info for ${unit}`);
-            console.error(detailStderr);
-          } else {
-            const details = detailStdout.trim().split('\n').reduce((acc, line) => {
-              const [key, value] = line.split('=');
-              acc[key] = value;
-              return acc;
-            }, {});
-
-            const unitInfo = {
-              name: unit,
-              description: details.Description,
-              loaded: details.LoadState === 'loaded',
-              file: details.UnitFileState,
-              startup: details.ActiveState,
-              props: {
-                preset: details.SubState,
-              },
-              active: details.ActiveState,
-              started: details.ActiveEnterTimestamp ? new Date(parseInt(details.ActiveEnterTimestamp) * 1000).toISOString() : null,
-              pid: details.MainPID,
-              raw: detailStdout.trim(),
-            };
-
-            unitsList.push(unitInfo);
-          }
-
-          // Print the JSON result when all units are processed
-          if (unitsList.length === lines.length) {
-            console.log(JSON.stringify(unitsList, null, 2));
-          }
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error listing units');
+        console.error(stderr);
+      } else {
+        const lines = stdout.trim().split('\n');
+        const unitsList = [];
+  
+        lines.forEach((line) => {
+          const [unit, load, active, sub, description] = line.split(/\s+/);
+          unitsList.push({ unit, load, active, sub, description });
         });
-      });
-    }
-  });
+  
+       response.json(JSON.parse(unitsList, null, 2))
+      }
+    });
 };

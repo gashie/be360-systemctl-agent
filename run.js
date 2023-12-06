@@ -1,6 +1,6 @@
-const { exec } = require('child_process');
 
 function listUnits() {
+    const { exec } = require('child_process');
     const cmd = 'systemctl list-units --no-legend';
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
@@ -11,11 +11,7 @@ function listUnits() {
         const unitsList = [];
   
         lines.forEach((line) => {
-        
-          const [unit, load, active, sub, description, Arbitrary, ExecutableFile, Formats, File, System ,Automount, Point] = line.split(/\s+/);
-          console.log('====================================');
-          console.log( Arbitrary, ExecutableFile, Formats, File, System ,Automount, Point);
-          console.log('====================================');
+          const [unit, load, active, sub, description] = line.split(/\s+/);
           unitsList.push({ unit, load, active, sub, description });
         });
   
