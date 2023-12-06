@@ -3,7 +3,7 @@ const sysctlx = require('sysctlx');
 async function listRunningServices() {
   try {
     // Run systemctl command to list all running services
-    const result = await sysctlx.systemctl('list-units', '--type=service', '--state=running', '--plain', '--all', '--no-pager', '--json');
+    const result = await sysctlx.systemctl('list-units', '--type=service', '--state=running', '--plain', '--all', '--no-pager');
 
     try {
       // Parse the JSON result
