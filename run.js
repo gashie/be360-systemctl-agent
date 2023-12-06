@@ -32,7 +32,7 @@ function getServiceInfo(serviceName) {
       preset,
     },
     status,
-    started: started ? new Date(parseInt(started) * 1000).toISOString() : null,
+    started: started,
     pid,
     raw,
   };
